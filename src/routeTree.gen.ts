@@ -13,10 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeamIndexRouteImport } from './routes/[team]/index'
 import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
 import { Route as RobotsTxtRouteImport } from './routes/robots.txt'
+import { Route as KeyTxtRouteImport } from './routes/[key].txt'
 import { Route as TeamBlogIndexRouteImport } from './routes/[team]/[blog]/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
+import { Route as ApiIndexnowSubmitRouteImport } from './routes/api/indexnow.submit'
 import { Route as TeamBlogSlugIndexRouteImport } from './routes/[team]/[blog]/[slug]/index'
 import { Route as TeamBlogAdminIndexRouteImport } from './routes/[team]/[blog]/admin/index'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
@@ -47,6 +49,11 @@ const RobotsTxtRoute = RobotsTxtRouteImport.update({
   path: '/robots/txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KeyTxtRoute = KeyTxtRouteImport.update({
+  id: '/key/txt',
+  path: '/key/txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeamBlogIndexRoute = TeamBlogIndexRouteImport.update({
   id: '/team/blog/',
   path: '/team/blog/',
@@ -65,6 +72,11 @@ const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
 const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
   id: '/demo/api/names',
   path: '/demo/api/names',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiIndexnowSubmitRoute = ApiIndexnowSubmitRouteImport.update({
+  id: '/api/indexnow/submit',
+  path: '/api/indexnow/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamBlogSlugIndexRoute = TeamBlogSlugIndexRouteImport.update({
@@ -117,9 +129,11 @@ const TeamBlogAdminPostsCollaborativeRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/key/txt': typeof KeyTxtRoute
   '/robots/txt': typeof RobotsTxtRoute
   '/sitemap/xml': typeof SitemapXmlRoute
   '/team/': typeof TeamIndexRoute
+  '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -136,9 +150,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/key/txt': typeof KeyTxtRoute
   '/robots/txt': typeof RobotsTxtRoute
   '/sitemap/xml': typeof SitemapXmlRoute
   '/team': typeof TeamIndexRoute
+  '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -156,9 +172,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/key/txt': typeof KeyTxtRoute
   '/robots/txt': typeof RobotsTxtRoute
   '/sitemap/xml': typeof SitemapXmlRoute
   '/team/': typeof TeamIndexRoute
+  '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -177,9 +195,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/key/txt'
     | '/robots/txt'
     | '/sitemap/xml'
     | '/team/'
+    | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -196,9 +216,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/key/txt'
     | '/robots/txt'
     | '/sitemap/xml'
     | '/team'
+    | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -215,9 +237,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/key/txt'
     | '/robots/txt'
     | '/sitemap/xml'
     | '/team/'
+    | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -235,9 +259,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KeyTxtRoute: typeof KeyTxtRoute
   RobotsTxtRoute: typeof RobotsTxtRoute
   SitemapXmlRoute: typeof SitemapXmlRoute
   TeamIndexRoute: typeof TeamIndexRoute
+  ApiIndexnowSubmitRoute: typeof ApiIndexnowSubmitRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
@@ -283,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/key/txt': {
+      id: '/key/txt'
+      path: '/key/txt'
+      fullPath: '/key/txt'
+      preLoaderRoute: typeof KeyTxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/team/blog/': {
       id: '/team/blog/'
       path: '/team/blog'
@@ -309,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/demo/api/names'
       fullPath: '/demo/api/names'
       preLoaderRoute: typeof DemoApiNamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/indexnow/submit': {
+      id: '/api/indexnow/submit'
+      path: '/api/indexnow/submit'
+      fullPath: '/api/indexnow/submit'
+      preLoaderRoute: typeof ApiIndexnowSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/team/blog/slug/': {
@@ -379,9 +419,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KeyTxtRoute: KeyTxtRoute,
   RobotsTxtRoute: RobotsTxtRoute,
   SitemapXmlRoute: SitemapXmlRoute,
   TeamIndexRoute: TeamIndexRoute,
+  ApiIndexnowSubmitRoute: ApiIndexnowSubmitRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
