@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeamIndexRouteImport } from './routes/[team]/index'
+import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
+import { Route as RobotsTxtRouteImport } from './routes/robots.txt'
 import { Route as TeamBlogIndexRouteImport } from './routes/[team]/[blog]/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
@@ -22,6 +24,7 @@ import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 import { Route as TeamBlogAdminPostsNewRouteImport } from './routes/[team]/[blog]/admin/posts/new'
+import { Route as TeamBlogAdminPostsEnhancedNewRouteImport } from './routes/[team]/[blog]/admin/posts/enhanced-new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,6 +34,16 @@ const IndexRoute = IndexRouteImport.update({
 const TeamIndexRoute = TeamIndexRouteImport.update({
   id: '/team/',
   path: '/team/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapXmlRoute = SitemapXmlRouteImport.update({
+  id: '/sitemap/xml',
+  path: '/sitemap/xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsTxtRoute = RobotsTxtRouteImport.update({
+  id: '/robots/txt',
+  path: '/robots/txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamBlogIndexRoute = TeamBlogIndexRouteImport.update({
@@ -88,9 +101,17 @@ const TeamBlogAdminPostsNewRoute = TeamBlogAdminPostsNewRouteImport.update({
   path: '/team/blog/admin/posts/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TeamBlogAdminPostsEnhancedNewRoute =
+  TeamBlogAdminPostsEnhancedNewRouteImport.update({
+    id: '/team/blog/admin/posts/enhanced-new',
+    path: '/team/blog/admin/posts/enhanced-new',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/robots/txt': typeof RobotsTxtRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/team/': typeof TeamIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -102,10 +123,13 @@ export interface FileRoutesByFullPath {
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
   '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/robots/txt': typeof RobotsTxtRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/team': typeof TeamIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -117,11 +141,14 @@ export interface FileRoutesByTo {
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
   '/team/blog/admin': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/robots/txt': typeof RobotsTxtRoute
+  '/sitemap/xml': typeof SitemapXmlRoute
   '/team/': typeof TeamIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -133,12 +160,15 @@ export interface FileRoutesById {
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
   '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/robots/txt'
+    | '/sitemap/xml'
     | '/team/'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -150,10 +180,13 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/'
     | '/team/blog/admin/'
     | '/team/blog/slug/'
+    | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/robots/txt'
+    | '/sitemap/xml'
     | '/team'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -165,10 +198,13 @@ export interface FileRouteTypes {
     | '/demo/start/ssr'
     | '/team/blog/admin'
     | '/team/blog/slug'
+    | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   id:
     | '__root__'
     | '/'
+    | '/robots/txt'
+    | '/sitemap/xml'
     | '/team/'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -180,11 +216,14 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/'
     | '/team/blog/admin/'
     | '/team/blog/slug/'
+    | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RobotsTxtRoute: typeof RobotsTxtRoute
+  SitemapXmlRoute: typeof SitemapXmlRoute
   TeamIndexRoute: typeof TeamIndexRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -196,6 +235,7 @@ export interface RootRouteChildren {
   DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
   TeamBlogAdminIndexRoute: typeof TeamBlogAdminIndexRoute
   TeamBlogSlugIndexRoute: typeof TeamBlogSlugIndexRoute
+  TeamBlogAdminPostsEnhancedNewRoute: typeof TeamBlogAdminPostsEnhancedNewRoute
   TeamBlogAdminPostsNewRoute: typeof TeamBlogAdminPostsNewRoute
 }
 
@@ -213,6 +253,20 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/team/'
       preLoaderRoute: typeof TeamIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap/xml': {
+      id: '/sitemap/xml'
+      path: '/sitemap/xml'
+      fullPath: '/sitemap/xml'
+      preLoaderRoute: typeof SitemapXmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots/txt': {
+      id: '/robots/txt'
+      path: '/robots/txt'
+      fullPath: '/robots/txt'
+      preLoaderRoute: typeof RobotsTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/team/blog/': {
@@ -292,11 +346,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamBlogAdminPostsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/team/blog/admin/posts/enhanced-new': {
+      id: '/team/blog/admin/posts/enhanced-new'
+      path: '/team/blog/admin/posts/enhanced-new'
+      fullPath: '/team/blog/admin/posts/enhanced-new'
+      preLoaderRoute: typeof TeamBlogAdminPostsEnhancedNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RobotsTxtRoute: RobotsTxtRoute,
+  SitemapXmlRoute: SitemapXmlRoute,
   TeamIndexRoute: TeamIndexRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
@@ -308,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
   TeamBlogAdminIndexRoute: TeamBlogAdminIndexRoute,
   TeamBlogSlugIndexRoute: TeamBlogSlugIndexRoute,
+  TeamBlogAdminPostsEnhancedNewRoute: TeamBlogAdminPostsEnhancedNewRoute,
   TeamBlogAdminPostsNewRoute: TeamBlogAdminPostsNewRoute,
 }
 export const routeTree = rootRouteImport
