@@ -25,6 +25,7 @@ import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 import { Route as TeamBlogAdminPostsNewRouteImport } from './routes/[team]/[blog]/admin/posts/new'
 import { Route as TeamBlogAdminPostsEnhancedNewRouteImport } from './routes/[team]/[blog]/admin/posts/enhanced-new'
+import { Route as TeamBlogAdminPostsCollaborativeRouteImport } from './routes/[team]/[blog]/admin/posts/collaborative'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -107,6 +108,12 @@ const TeamBlogAdminPostsEnhancedNewRoute =
     path: '/team/blog/admin/posts/enhanced-new',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TeamBlogAdminPostsCollaborativeRoute =
+  TeamBlogAdminPostsCollaborativeRouteImport.update({
+    id: '/team/blog/admin/posts/collaborative',
+    path: '/team/blog/admin/posts/collaborative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
   '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
   '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
@@ -141,6 +149,7 @@ export interface FileRoutesByTo {
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
   '/team/blog/admin': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
   '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
@@ -160,6 +169,7 @@ export interface FileRoutesById {
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
   '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
   '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
+  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
   '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
   '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
 }
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/'
     | '/team/blog/admin/'
     | '/team/blog/slug/'
+    | '/team/blog/admin/posts/collaborative'
     | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   fileRoutesByTo: FileRoutesByTo
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/demo/start/ssr'
     | '/team/blog/admin'
     | '/team/blog/slug'
+    | '/team/blog/admin/posts/collaborative'
     | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   id:
@@ -216,6 +228,7 @@ export interface FileRouteTypes {
     | '/demo/start/ssr/'
     | '/team/blog/admin/'
     | '/team/blog/slug/'
+    | '/team/blog/admin/posts/collaborative'
     | '/team/blog/admin/posts/enhanced-new'
     | '/team/blog/admin/posts/new'
   fileRoutesById: FileRoutesById
@@ -235,6 +248,7 @@ export interface RootRouteChildren {
   DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
   TeamBlogAdminIndexRoute: typeof TeamBlogAdminIndexRoute
   TeamBlogSlugIndexRoute: typeof TeamBlogSlugIndexRoute
+  TeamBlogAdminPostsCollaborativeRoute: typeof TeamBlogAdminPostsCollaborativeRoute
   TeamBlogAdminPostsEnhancedNewRoute: typeof TeamBlogAdminPostsEnhancedNewRoute
   TeamBlogAdminPostsNewRoute: typeof TeamBlogAdminPostsNewRoute
 }
@@ -353,6 +367,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamBlogAdminPostsEnhancedNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/team/blog/admin/posts/collaborative': {
+      id: '/team/blog/admin/posts/collaborative'
+      path: '/team/blog/admin/posts/collaborative'
+      fullPath: '/team/blog/admin/posts/collaborative'
+      preLoaderRoute: typeof TeamBlogAdminPostsCollaborativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -371,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
   TeamBlogAdminIndexRoute: TeamBlogAdminIndexRoute,
   TeamBlogSlugIndexRoute: TeamBlogSlugIndexRoute,
+  TeamBlogAdminPostsCollaborativeRoute: TeamBlogAdminPostsCollaborativeRoute,
   TeamBlogAdminPostsEnhancedNewRoute: TeamBlogAdminPostsEnhancedNewRoute,
   TeamBlogAdminPostsNewRoute: TeamBlogAdminPostsNewRoute,
 }

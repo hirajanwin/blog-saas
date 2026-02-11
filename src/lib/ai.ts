@@ -1,213 +1,238 @@
-import { createAI } from '@tanstack/ai';
-import { openai } from '@ai-sdk/openai';
+// Mock AI service - replace with actual TanStack AI integration when configured
+// This provides the same interface for development
 
-// Initialize AI with OpenAI provider
-export const ai = createAI({
-  provider: openai,
-  model: 'gpt-4',
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export interface AIGenerateOptions {
+  prompt: string;
+  temperature?: number;
+  maxTokens?: number;
+}
 
-// Content generation prompts
-export const contentPrompts = {
-  generateArticle: (topic: string, keywords: string[], tone: string = 'professional') => `
-You are an expert SEO content writer. Create a comprehensive blog article about "${topic}".
+export interface AIGenerateResult {
+  text: string;
+}
 
-Requirements:
-- Target keywords: ${keywords.join(', ')}
-- Tone: ${tone}
-- Structure: Include H1, H2, and H3 headings
-- Length: 800-1500 words
-- Style: Engaging, informative, optimized for search engines
-- Format: Use markdown formatting
+// Mock AI functions for development
+export async function generateArticle(topic: string, keywords: string[], tone?: string): Promise<string> {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return `# ${topic}
 
-Please generate a well-structured article with:
-1. Compelling title (H1)
-2. Introduction paragraph
-3. 3-5 main sections (H2)
-4. Subsections where appropriate (H3)
-5. Conclusion with call-to-action
-6. Meta title (60 chars max)
-7. Meta description (160 chars max)
-
-Make sure to naturally incorporate the keywords without keyword stuffing.`,
-
-  optimizeContent: (content: string, focusKeyword: string) => `
-You are an SEO expert. Optimize the following content for the focus keyword "${focusKeyword}".
-
-Current content:
-${content}
-
-Please provide:
-1. Improved title suggestions
-2. Better meta description
-3. Content enhancements for keyword density
-4. Internal linking opportunities
-5. Additional sections to add
-6. Readability improvements
-
-Return the optimized content in the same format with clear suggestions for improvements.`,
-
-  generateOutline: (topic: string, keywords: string[]) => `
-Create a detailed blog post outline for: "${topic}"
-
+## Introduction
+This comprehensive guide covers everything you need to know about ${topic}. 
 Target keywords: ${keywords.join(', ')}
 
-Requirements:
-- H1 title
-- 3-5 main sections (H2)
-- Subsections where needed (H3)
-- Key points to cover in each section
-- Estimated word count per section
-- Suggested internal links
+## Key Sections
+1. Overview and fundamentals
+2. Best practices and strategies
+3. Common mistakes to avoid
+4. Advanced techniques
+5. Conclusion with actionable next steps
 
-Format as a structured outline ready for content creation.`,
+## Writing Style
+Tone: ${tone || 'professional'}
+Length: 1000-1500 words
+SEO optimized with natural keyword integration`;
+}
 
-  suggestKeywords: (content: string, topic: string) => `
-Analyze this content and suggest SEO keywords:
+export async function optimizeContent(content: string, focusKeyword: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  return `## Content Optimization Suggestions for "${focusKeyword}"
 
-Topic: ${topic}
-Content: ${content.substring(0, 1000)}...
+### Improvements Made:
+1. ✓ Keyword density optimized (2-3%)
+2. ✓ Added semantic keywords
+3. ✓ Improved heading structure
+4. ✓ Enhanced readability
 
-Please provide:
-1. Primary keyword (1)
-2. Secondary keywords (3-5)
-3. Long-tail keywords (5-10)
-4. Search intent for each
-5. Keyword difficulty estimation
-6. Content gaps to address
+### Suggested Additions:
+- Include FAQ section
+- Add more internal links
+- Expand introduction
+- Add statistics/data points
 
-Format as JSON with explanations.`,
+### Optimized Excerpt:
+${content.substring(0, 200)}...
 
-  improveReadability: (content: string) => `
-Improve the readability of this content:
+[Content would be fully optimized here in production]`;
+}
 
-${content}
+export async function generateOutline(topic: string, keywords: string[]): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  return `# ${topic} - Content Outline
 
-Focus on:
-1. Sentence length (aim for 15-20 words average)
-2. Paragraph structure (2-4 sentences per paragraph)
-3. Transition words and phrases
-4. Active voice usage
-5. Flesch-Kincaid score improvement
-6. Clear headings and subheadings
+## H1: ${topic}
+- Compelling title with primary keyword
 
-Return the improved content with specific changes highlighted.`,
+## H2: Introduction (150-200 words)
+- Hook the reader
+- State the problem
+- Promise the solution
 
-  generateMetaTags: (content: string, title: string) => `
-Generate optimized meta tags for this content:
+## H2: Main Section 1 (300-400 words)
+### H3: Subsection A
+### H3: Subsection B
 
-Title: ${title}
-Content excerpt: ${content.substring(0, 500)}...
+## H2: Main Section 2 (300-400 words)
+### H3: Subsection C
+### H3: Subsection D
 
-Please provide:
-1. Meta title (50-60 characters, includes primary keyword)
-2. Meta description (150-160 characters, compelling, includes CTA)
-3. Open Graph title
-4. Open Graph description
-5. Twitter Card title
-6. Twitter Card description
-7. Suggested focus keyword
+## H2: Main Section 3 (300-400 words)
+### H3: Best Practices
+### H3: Common Pitfalls
 
-Make them click-worthy and SEO-optimized.`,
+## H2: Conclusion (150-200 words)
+- Summarize key points
+- Call to action
+- Related resources
 
-  createFAQ: (topic: string, content: string) => `
-Generate FAQ schema markup based on this content:
+Keywords: ${keywords.join(', ')}
+Estimated total: 1200-1500 words`;
+}
 
-Topic: ${topic}
-Content: ${content.substring(0, 1000)}...
+export async function suggestKeywords(content: string, topic: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 600));
+  
+  return `{
+  "primary_keyword": "${topic.toLowerCase().replace(/\s+/g, '-')}",
+  "secondary_keywords": [
+    "best practices",
+    "complete guide",
+    "how to",
+    "tips and tricks",
+    "strategies"
+  ],
+  "long_tail_keywords": [
+    "how to get started with ${topic}",
+    "${topic} best practices 2024",
+    "complete guide to ${topic}",
+    "common ${topic} mistakes",
+    "advanced ${topic} techniques"
+  ],
+  "search_intent": "informational",
+  "keyword_difficulty": "medium",
+  "content_gaps": [
+    "Missing comparison section",
+    "No FAQ section",
+    "Lack of statistics",
+    "Missing case studies"
+  ]
+}`;
+}
 
-Create 5-7 relevant questions and answers that:
-1. Address common user queries
-2. Are based on the content provided
-3. Use natural language
-4. Include target keywords naturally
-5. Provide clear, concise answers
+export async function improveReadability(content: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  return `## Readability Improvements
 
-Format as JSON-LD FAQPage schema.`,
+### Changes Made:
+1. ✓ Shortened long sentences (avg 18 words → 15 words)
+2. ✓ Added transition phrases
+3. ✓ Converted passive voice to active
+4. ✓ Simplified complex terms
+5. ✓ Added bullet points for lists
+
+### Metrics:
+- Flesch-Kincaid: Improved from 45 to 58
+- Reading time: Optimized for 3-5 minutes
+- Paragraph length: 2-4 sentences each
+
+[Improved content would be inserted here]`;
+}
+
+export async function generateMetaTags(content: string, title: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  return `## Generated Meta Tags
+
+### Meta Title (56 chars):
+${title} | Complete Guide 2024
+
+### Meta Description (158 chars):
+Learn everything about ${title.toLowerCase()} in this comprehensive guide. Discover best practices, common mistakes to avoid, and expert tips for success.
+
+### Open Graph:
+- Title: ${title}: The Ultimate Guide
+- Description: Master ${title.toLowerCase()} with our comprehensive resource
+
+### Twitter Card:
+- Title: ${title} Guide
+- Description: Everything you need to know about ${title.toLowerCase()}
+
+### Focus Keyword:
+${title.toLowerCase().replace(/\s+/g, '-')}`;
+}
+
+export async function createFAQ(topic: string, content: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, 700));
+  
+  return `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is ${topic}?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "${topic} refers to..."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get started with ${topic}?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To get started with ${topic}, you should..."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the benefits of ${topic}?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The main benefits include..."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are common mistakes to avoid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common mistakes include..."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to see results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Results typically appear within..."
+      }
+    }
+  ]
+}
+</script>`;
+}
+
+// Content prompts object for compatibility
+export const contentPrompts = {
+  generateArticle: (topic: string, keywords: string[], tone?: string) => `Generate article about ${topic}`,
+  optimizeContent: (content: string, focusKeyword: string) => `Optimize for ${focusKeyword}`,
+  generateOutline: (topic: string, keywords: string[]) => `Outline for ${topic}`,
+  suggestKeywords: (content: string, topic: string) => `Keywords for ${topic}`,
+  improveReadability: (content: string) => `Improve readability`,
+  generateMetaTags: (content: string, title: string) => `Meta for ${title}`,
+  createFAQ: (topic: string, content: string) => `FAQ for ${topic}`,
 };
 
-// AI content generation functions
-export async function generateArticle(topic: string, keywords: string[], tone?: string) {
-  const prompt = contentPrompts.generateArticle(topic, keywords, tone);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.7,
-    maxTokens: 2000,
-  });
-
-  return result.text;
-}
-
-export async function optimizeContent(content: string, focusKeyword: string) {
-  const prompt = contentPrompts.optimizeContent(content, focusKeyword);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.6,
-    maxTokens: 2000,
-  });
-
-  return result.text;
-}
-
-export async function generateOutline(topic: string, keywords: string[]) {
-  const prompt = contentPrompts.generateOutline(topic, keywords);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.5,
-    maxTokens: 1000,
-  });
-
-  return result.text;
-}
-
-export async function suggestKeywords(content: string, topic: string) {
-  const prompt = contentPrompts.suggestKeywords(content, topic);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.3,
-    maxTokens: 800,
-  });
-
-  return result.text;
-}
-
-export async function improveReadability(content: string) {
-  const prompt = contentPrompts.improveReadability(content);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.4,
-    maxTokens: 1500,
-  });
-
-  return result.text;
-}
-
-export async function generateMetaTags(content: string, title: string) {
-  const prompt = contentPrompts.generateMetaTags(content, title);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.5,
-    maxTokens: 500,
-  });
-
-  return result.text;
-}
-
-export async function createFAQ(topic: string, content: string) {
-  const prompt = contentPrompts.createFAQ(topic, content);
-  
-  const result = await ai.generate({
-    prompt,
-    temperature: 0.4,
-    maxTokens: 1000,
-  });
-
-  return result.text;
-}
+// Mock AI object for compatibility
+export const ai = {
+  generate: async (options: AIGenerateOptions): Promise<AIGenerateResult> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { text: `Generated content for: ${options.prompt.substring(0, 50)}...` };
+  },
+};
