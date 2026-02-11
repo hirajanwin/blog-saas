@@ -1,8 +1,8 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit';
 import { useCallback, useState, useEffect } from 'react';
-import { analyzeSEO } from '../../../lib/seo'
-import SEOStatusBar from '../SEOStatusBar'
+import { analyzeSEO } from '@/lib/seo'
+import SEOStatusBar from '@/components/SEOStatusBar'
 
 interface EnhancedTiptapEditorProps {
   value: string;
@@ -56,7 +56,7 @@ export default function EnhancedTiptapEditor({
     const analysis = analyzeSEO(content, plainTitle, metaDescription);
     setSEOAnalysis(analysis);
     onSEOChange?.(analysis);
-  }, [editor.getHTML()], onSEOChange ? 300 : 1000]);
+  }, [editor.getHTML()]);
 
   // Enhanced markdown shortcuts
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
