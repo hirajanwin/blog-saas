@@ -68,6 +68,75 @@ A modern, SEO-optimized blogging platform built with TanStack Start and Cloudfla
 - **Content Tasks**: A tool for creating and managing tasks related to content creation.
 - **Post Comments**: A commenting system for posts.
 
+## 💰 Monetization & Payments
+
+- **Polar Integration**: Complete payment system for subscriptions and one-time payments
+  - Checkout flow with product selection
+  - Webhook handlers for subscription events
+  - Customer management
+  - Usage-based billing tracking
+- **Pricing Plans**:
+  - **Starter** (Free): 1 blog, 10 posts/month, 1,000 AI credits
+  - **Professional** ($49/mo): 5 blogs, unlimited posts, 10K AI credits, custom domains
+  - **Agency** ($199/mo): Unlimited everything, white-label, client management, revenue sharing
+- **Usage Tracking**: AI credits, API calls, storage monitoring
+
+## 📈 SEO Automation Suite
+
+- **Keyword Rank Tracking**: Track rankings across Google, Bing, DuckDuckGo
+  - Position monitoring by location and device
+  - Historical tracking with change notifications
+- **Competitor Analysis**: 
+  - Identify content gaps vs competitors
+  - Gap opportunity scoring (0-100)
+  - Automated competitor monitoring
+- **SEO Tasks**:
+  - Automated recommendation generation
+  - Priority, impact, and effort scoring
+  - Task status tracking (pending, in_progress, completed)
+  - Automated vs manual task distinction
+- **Performance Analytics**:
+  - Organic clicks, impressions, CTR tracking
+  - Average position monitoring
+  - Backlink and referring domain tracking
+
+## 🏢 White-Label Agency Solutions
+
+- **Client Management**:
+  - Full client profiles with company info
+  - Team assignment per client
+  - Permission controls
+  - Monthly fee tracking
+- **White-Label Branding**:
+  - Custom logo and favicon
+  - Primary/secondary/accent color customization
+  - Custom CSS injection
+  - Custom domain support
+  - Header/footer HTML injection
+  - Remove platform branding option
+- **Agency Billing**:
+  - Automatic billing generation
+  - Polar fee calculation
+  - Profit margin tracking
+  - Revenue analytics
+- **Bulk Operations**:
+  - Batch client onboarding
+  - Content creation automation
+  - SEO audit automation
+  - Progress tracking
+
+## 🎯 Revenue Model
+
+### For Platform (You)
+- **Subscription Revenue**: Monthly/yearly plans via Polar
+- **Transaction Fees**: 5% on agency billing (built-in)
+- **Enterprise Deals**: Custom pricing for large teams
+
+### For Agencies (Your Customers)
+- **Client Billing**: Agencies set their own prices
+- **Profit Margins**: Track difference between wholesale and retail
+- **Recurring Revenue**: Monthly retainer model support
+
 ## 🏗️ Architecture
 
 ### Database Schema
@@ -151,7 +220,7 @@ src/
 └── types/                   # TypeScript definitions
 ```
 
-## 🎯 Next Steps (Phase 2-3)
+## 🎯 Next Steps (Phase 2-4)
 
 ### Phase 2: Advanced SEO & Performance
 - [x] XML sitemap generation
@@ -167,6 +236,24 @@ src/
 - [x] Real-time SEO scoring
 - [x] Team collaboration features
 
+### Phase 4: Monetization & Agency Tools
+- [x] Polar payment integration
+- [x] Subscription management (webhooks)
+- [x] Usage-based billing
+- [x] Pricing plans (Starter, Professional, Agency)
+- [x] Agency client management
+- [x] White-label branding
+- [x] Bulk operations
+- [x] SEO automation suite
+- [x] Competitor analysis
+- [x] Keyword rank tracking
+
+### Phase 5: Enterprise Features (Coming Soon)
+- [ ] Advanced analytics & reporting
+- [ ] Custom integrations
+- [ ] SLA guarantees
+- [ ] Dedicated support tiers
+
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -181,6 +268,11 @@ DATABASE_ID=your_d1_database_id
 # AI Providers (Phase 3)
 OPENAI_API_KEY=your_openai_key
 ANTHROPIC_API_KEY=your_anthropic_key
+
+# Polar Payments (Phase 4)
+POLAR_ACCESS_TOKEN=your_polar_access_token
+POLAR_WEBHOOK_SECRET=your_polar_webhook_secret
+PUBLIC_URL=https://your-domain.com
 ```
 
 ### Wrangler Configuration
