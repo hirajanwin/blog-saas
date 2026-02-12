@@ -11,16 +11,26 @@ export interface AIGenerateResult {
   text: string;
 }
 
+export interface PostForLinkSuggestion {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 // Mock AI functions for development
-export async function generateArticle(topic: string, keywords: string[], tone?: string): Promise<string> {
+export async function generateArticle(
+  topic: string,
+  keywords: string[],
+  tone?: string,
+): Promise<string> {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return `# ${topic}
 
 ## Introduction
-This comprehensive guide covers everything you need to know about ${topic}. 
-Target keywords: ${keywords.join(', ')}
+This comprehensive guide covers everything you need to know about ${topic}.
+Target keywords: ${keywords.join(", ")}
 
 ## Key Sections
 1. Overview and fundamentals
@@ -30,14 +40,17 @@ Target keywords: ${keywords.join(', ')}
 5. Conclusion with actionable next steps
 
 ## Writing Style
-Tone: ${tone || 'professional'}
+Tone: ${tone || "professional"}
 Length: 1000-1500 words
 SEO optimized with natural keyword integration`;
 }
 
-export async function optimizeContent(content: string, focusKeyword: string): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
+export async function optimizeContent(
+  content: string,
+  focusKeyword: string,
+): Promise<string> {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return `## Content Optimization Suggestions for "${focusKeyword}"
 
 ### Improvements Made:
@@ -58,9 +71,12 @@ ${content.substring(0, 200)}...
 [Content would be fully optimized here in production]`;
 }
 
-export async function generateOutline(topic: string, keywords: string[]): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
+export async function generateOutline(
+  topic: string,
+  keywords: string[],
+): Promise<string> {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
   return `# ${topic} - Content Outline
 
 ## H1: ${topic}
@@ -88,15 +104,18 @@ export async function generateOutline(topic: string, keywords: string[]): Promis
 - Call to action
 - Related resources
 
-Keywords: ${keywords.join(', ')}
+Keywords: ${keywords.join(", ")}
 Estimated total: 1200-1500 words`;
 }
 
-export async function suggestKeywords(content: string, topic: string): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 600));
-  
+export async function suggestKeywords(
+  content: string,
+  topic: string,
+): Promise<string> {
+  await new Promise((resolve) => setTimeout(resolve, 600));
+
   return `{
-  "primary_keyword": "${topic.toLowerCase().replace(/\s+/g, '-')}",
+  "primary_keyword": "${topic.toLowerCase().replace(/\s+/g, "-")}",
   "secondary_keywords": [
     "best practices",
     "complete guide",
@@ -123,8 +142,8 @@ export async function suggestKeywords(content: string, topic: string): Promise<s
 }
 
 export async function improveReadability(content: string): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
   return `## Readability Improvements
 
 ### Changes Made:
@@ -142,9 +161,12 @@ export async function improveReadability(content: string): Promise<string> {
 [Improved content would be inserted here]`;
 }
 
-export async function generateMetaTags(content: string, title: string): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
+export async function generateMetaTags(
+  content: string,
+  title: string,
+): Promise<string> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
   return `## Generated Meta Tags
 
 ### Meta Title (56 chars):
@@ -162,12 +184,15 @@ Learn everything about ${title.toLowerCase()} in this comprehensive guide. Disco
 - Description: Everything you need to know about ${title.toLowerCase()}
 
 ### Focus Keyword:
-${title.toLowerCase().replace(/\s+/g, '-')}`;
+${title.toLowerCase().replace(/\s+/g, "-")}`;
 }
 
-export async function createFAQ(topic: string, content: string): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, 700));
-  
+export async function createFAQ(
+  topic: string,
+  content: string,
+): Promise<string> {
+  await new Promise((resolve) => setTimeout(resolve, 700));
+
   return `<script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -218,21 +243,48 @@ export async function createFAQ(topic: string, content: string): Promise<string>
 </script>`;
 }
 
+export async function suggestInternalLinks(
+  content: string,
+  allPosts: PostForLinkSuggestion[],
+): Promise<any> {
+  await new Promise((resolve) => setTimeout(resolve, 900));
+
+  // In a real scenario, the AI would analyze the content and find relevant links.
+  // Here, we'll just return a few mock suggestions.
+  const suggestions = allPosts.slice(0, 3).map((post) => ({
+    text: `Consider linking to "${post.title}"`,
+    url: `../${post.slug}`,
+    relevance: Math.random().toFixed(2),
+  }));
+
+  return {
+    suggestions: suggestions,
+    analysis: "Based on the content, these posts seem contextually relevant.",
+  };
+}
+
 // Content prompts object for compatibility
 export const contentPrompts = {
-  generateArticle: (topic: string, keywords: string[], tone?: string) => `Generate article about ${topic}`,
-  optimizeContent: (content: string, focusKeyword: string) => `Optimize for ${focusKeyword}`,
-  generateOutline: (topic: string, keywords: string[]) => `Outline for ${topic}`,
+  generateArticle: (topic: string, keywords: string[], tone?: string) =>
+    `Generate article about ${topic}`,
+  optimizeContent: (content: string, focusKeyword: string) =>
+    `Optimize for ${focusKeyword}`,
+  generateOutline: (topic: string, keywords: string[]) =>
+    `Outline for ${topic}`,
   suggestKeywords: (content: string, topic: string) => `Keywords for ${topic}`,
   improveReadability: (content: string) => `Improve readability`,
   generateMetaTags: (content: string, title: string) => `Meta for ${title}`,
   createFAQ: (topic: string, content: string) => `FAQ for ${topic}`,
+  suggestInternalLinks: (content: string, allPosts: PostForLinkSuggestion[]) =>
+    `Suggest internal links from content`,
 };
 
 // Mock AI object for compatibility
 export const ai = {
   generate: async (options: AIGenerateOptions): Promise<AIGenerateResult> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return { text: `Generated content for: ${options.prompt.substring(0, 50)}...` };
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return {
+      text: `Generated content for: ${options.prompt.substring(0, 50)}...`,
+    };
   },
 };

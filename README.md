@@ -50,6 +50,24 @@ A modern, SEO-optimized blogging platform built with TanStack Start and Cloudfla
 - **90+ Lighthouse Scores**: Optimized for performance, SEO, and accessibility
 - **Bundle Optimization**: Code splitting and minification
 
+## 🔥 Additional Features
+
+- **A/B Testing**: Allows users to test different headlines and see which one performs better.
+- **Content Performance Analytics**: A dashboard for tracking key content metrics like views, visitors, bounce rate, and conversions.
+- **Email Newsletter Integration**: A system for managing subscribers and sending newsletters.
+- **Broken Link Checker**: A tool for scanning posts for broken, redirected, or slow external links.
+- **Content Repurposer**: A tool to transform an article into different formats like a Twitter thread, LinkedIn post, or newsletter.
+- **Dark Mode Toggle**: A toggle to switch between light and dark mode.
+- **Reading Progress**: A progress bar that shows how far the user has scrolled through an article.
+- **Table of Contents**: A component that automatically generates a table of contents for an article based on its headings.
+- **Content Calendar**: A calendar for scheduling and viewing content (posts, social media, emails).
+- **Revision History**: A system for viewing and restoring previous versions of a post.
+- **Migration Tools**: Tools for importing content from other platforms like WordPress, Medium, and Ghost.
+- **Lead Generation**: A feature for creating and managing lead generation forms.
+- **Analytics Dashboard**: A dashboard for viewing privacy-friendly analytics.
+- **Content Tasks**: A tool for creating and managing tasks related to content creation.
+- **Post Comments**: A commenting system for posts.
+
 ## 🏗️ Architecture
 
 ### Database Schema
@@ -136,18 +154,18 @@ src/
 ## 🎯 Next Steps (Phase 2-3)
 
 ### Phase 2: Advanced SEO & Performance
-- [ ] XML sitemap generation
-- [ ] Robots.txt management
-- [ ] Internal linking suggestions
-- [ ] Core Web Vitals optimization
-- [ ] Image WebP conversion pipeline
+- [x] XML sitemap generation
+- [x] Robots.txt management
+- [x] Internal linking suggestions
+- [x] Core Web Vitals optimization
+- [x] Image WebP conversion pipeline
 
 ### Phase 3: AI Content Generation
-- [ ] AI article generation
-- [ ] Keyword research automation
-- [ ] Content optimization suggestions
-- [ ] Real-time SEO scoring
-- [ ] Team collaboration features
+- [x] AI article generation
+- [x] Keyword research automation
+- [x] Content optimization suggestions
+- [x] Real-time SEO scoring
+- [x] Team collaboration features
 
 ## 🔧 Configuration
 
