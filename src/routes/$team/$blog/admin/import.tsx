@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain } from '../../../../lib/db'
-import { blogs } from '../../../../lib/db/schema'
+import { getDbFromContext, getTeamBySubdomain, mockTeam, mockBlog } from "@/lib/db"
+import { blogs } from "@/lib/db/schema"
 import { eq } from 'drizzle-orm'
 import { useState } from 'react'
 import { Upload, FileText, AlertCircle, CheckCircle2 } from 'lucide-react'
 
-export const Route = createFileRoute('/team/blog/admin/import')({
+export const Route = createFileRoute('/$team/$blog/admin/import')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     
@@ -13,9 +13,12 @@ export const Route = createFileRoute('/team/blog/admin/import')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      return { team: t, blog: mockBlog(blog, t.id) };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
@@ -31,10 +34,7 @@ export const Route = createFileRoute('/team/blog/admin/import')({
       throw new Error('Blog not found');
     }
 
-    return {
-      team: teamData,
-      blog: blogData[0],
-    };
+    return { team: teamData, blog: blogData[0] };
   },
   component: ImportComponent,
   head: () => ({
@@ -43,8 +43,8 @@ export const Route = createFileRoute('/team/blog/admin/import')({
   }),
 });
 
-function ImportComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blog } = loaderData;
+function ImportComponent() {
+  const { team, blog } = Route.useLoaderData();
   const [importType, setImportType] = useState<'markdown' | 'wordpress' | 'medium' | 'json'>('markdown');
   const [files, setFiles] = useState<FileList | null>(null);
   const [loading, setLoading] = useState(false);

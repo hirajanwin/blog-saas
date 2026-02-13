@@ -1,7 +1,7 @@
 import { json } from '@tanstack/react-start'
 import { createAPIFileRoute } from '@tanstack/react-start/api'
-import { createDb } from '../../../lib/db'
-import { teams } from '../../../lib/db/schema'
+import { createDb } from '../../../../lib/db'
+import { teams } from '../../../../lib/db/schema'
 import { eq } from 'drizzle-orm'
 
 export const APIRoute = createAPIFileRoute('/api/teams/check-subdomain')({

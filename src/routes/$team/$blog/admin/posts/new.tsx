@@ -1,29 +1,25 @@
 import { createFileRoute, redirect, Action } from '@tanstack/react-router'
-import { createDb } from '../../../../../lib/db'
-import { getTeamBySubdomain } from '../../../../../lib/db'
+import { getDbFromContext, getTeamBySubdomain, mockTeam, createDb } from '@/lib/db'
 import { nanoid } from 'nanoid'
 
-export const Route = createFileRoute('/team/blog/admin/posts/new')({
+export const Route = createFileRoute('/$team/$blog/admin/posts/new')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     if (!team || !blog) {
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      return { team: mockTeam(team), blogId: blog, post: null };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    return {
-      team: teamData,
-      blogId: blog,
-      post: null, // New post
-    };
+    return { team: teamData, blogId: blog, post: null };
   },
   action: async ({ request, params, context }) => {
     const { team, blog } = params;
@@ -91,14 +87,8 @@ export const Route = createFileRoute('/team/blog/admin/posts/new')({
   }),
 });
 
-function PostEditorComponent({ 
-  loaderData, 
-  actionData 
-}: { 
-  loaderData: Awaited<ReturnType<typeof Route.loader>>
-  actionData?: Awaited<ReturnType<typeof Route.action>>
-}) {
-  const { team, blogId } = loaderData;
+function PostEditorComponent() {
+  const { team, blogId } = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-gray-50">

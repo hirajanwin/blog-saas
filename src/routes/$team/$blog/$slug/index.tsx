@@ -1,10 +1,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain, getPostBySlug } from '../../../../lib/db'
-import { blogs, users, postComments } from '../../../../lib/db/schema'
+import { getDbFromContext, getTeamBySubdomain, getPostBySlug, mockTeam, mockBlog } from "@/lib/db"
+import { blogs, users, postComments } from "@/lib/db/schema"
 import { eq, desc } from 'drizzle-orm'
-import PostComments from '../../../../components/PostComments'
+import PostComments from '@/components/PostComments'
 
-export const Route = createFileRoute('/team/blog/slug/')({
+export const Route = createFileRoute('/$team/$blog/$slug/')({
   loader: async ({ params, context }) => {
     const { team, blog, slug } = params;
     
@@ -12,16 +12,18 @@ export const Route = createFileRoute('/team/blog/slug/')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      const b = mockBlog(blog, t.id);
+      return { team: t, blog: b, post: { id: 'mock', title: slug, slug, content: '<p>Sample post content</p>', excerpt: '', metaTitle: '', metaDescription: '', ogImage: null, focusKeyword: '', seoScore: 0, publishedAt: new Date().toISOString(), authorName: 'Author', authorAvatar: null, views: 0, readingTime: 1, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), status: 'published' }, comments: [] };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    // Get blog
     const blogData = await db
       .select()
       .from(blogs)
@@ -32,18 +34,15 @@ export const Route = createFileRoute('/team/blog/slug/')({
       throw new Error('Blog not found');
     }
 
-    // Verify blog belongs to team
     if (blogData[0].teamId !== teamData.id) {
       throw new Error('Blog not found in this team');
     }
 
-    // Get post by slug
     const post = await getPostBySlug(db, blog, slug);
     if (!post) {
       throw new Error('Post not found');
     }
 
-    // Get comments for this post
     const comments = await db
       .select({
         id: postComments.id,
@@ -58,32 +57,27 @@ export const Route = createFileRoute('/team/blog/slug/')({
       .where(eq(postComments.postId, post.id))
       .orderBy(desc(postComments.createdAt));
 
-    return {
-      team: teamData,
-      blog: blogData[0],
-      post,
-      comments,
-    };
+    return { team: teamData, blog: blogData[0], post, comments };
   },
   component: PostComponent,
   head: ({ loaderData }) => ({
-    title: loaderData.post.metaTitle || loaderData.post.title,
+    title: loaderData?.post?.metaTitle || loaderData?.post?.title || 'Post',
     meta: [
       {
         name: 'description',
-        content: loaderData.post.metaDescription || loaderData.post.excerpt || '',
+        content: loaderData?.post?.metaDescription || loaderData?.post?.excerpt || '',
       },
       {
         property: 'og:title',
-        content: loaderData.post.metaTitle || loaderData.post.title,
+        content: loaderData?.post?.metaTitle || loaderData?.post?.title || '',
       },
       {
         property: 'og:description',
-        content: loaderData.post.metaDescription || loaderData.post.excerpt || '',
+        content: loaderData?.post?.metaDescription || loaderData?.post?.excerpt || '',
       },
       {
         property: 'og:image',
-        content: loaderData.post.ogImage || '',
+        content: loaderData?.post?.ogImage || '',
       },
       {
         name: 'twitter:card',
@@ -93,8 +87,8 @@ export const Route = createFileRoute('/team/blog/slug/')({
   }),
 });
 
-function PostComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blog, post, comments } = loaderData;
+function PostComponent() {
+  const { team, blog, post, comments } = Route.useLoaderData();
 
   // Parse content from JSON (Tiptap format)
   let contentHtml = '';

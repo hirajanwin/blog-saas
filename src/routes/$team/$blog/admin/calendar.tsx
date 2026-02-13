@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain } from '../../../../lib/db'
-import { posts, blogs } from '../../../../lib/db/schema'
+import { getDbFromContext, getTeamBySubdomain, mockTeam, mockBlog } from "@/lib/db"
+import { posts, blogs } from "@/lib/db/schema"
 import { eq, and, gte, lte } from 'drizzle-orm'
 import { useState } from 'react'
 import { Calendar, Clock, ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 
-export const Route = createFileRoute('/team/blog/admin/calendar')({
+export const Route = createFileRoute('/$team/$blog/admin/calendar')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     
@@ -13,9 +13,12 @@ export const Route = createFileRoute('/team/blog/admin/calendar')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      return { team: t, blog: mockBlog(blog, t.id), scheduledPosts: [], draftPosts: [] };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
@@ -31,7 +34,6 @@ export const Route = createFileRoute('/team/blog/admin/calendar')({
       throw new Error('Blog not found');
     }
 
-    // Get scheduled and draft posts
     const scheduledPosts = await db
       .select()
       .from(posts)
@@ -48,12 +50,7 @@ export const Route = createFileRoute('/team/blog/admin/calendar')({
         eq(posts.status, 'draft')
       ));
 
-    return {
-      team: teamData,
-      blog: blogData[0],
-      scheduledPosts,
-      draftPosts,
-    };
+    return { team: teamData, blog: blogData[0], scheduledPosts, draftPosts };
   },
   component: ContentCalendarComponent,
   head: () => ({
@@ -62,8 +59,8 @@ export const Route = createFileRoute('/team/blog/admin/calendar')({
   }),
 });
 
-function ContentCalendarComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blog, scheduledPosts, draftPosts } = loaderData;
+function ContentCalendarComponent() {
+  const { team, blog, scheduledPosts, draftPosts } = Route.useLoaderData();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<'month' | 'week'>('month');
 

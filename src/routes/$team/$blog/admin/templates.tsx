@@ -134,7 +134,7 @@ const defaultTemplates = [
   },
 ];
 
-export const Route = createFileRoute('/team/blog/admin/templates')({
+export const Route = createFileRoute('/$team/$blog/admin/templates')({
   component: TemplatesComponent,
   head: () => ({
     title: 'Content Templates',

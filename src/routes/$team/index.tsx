@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain, getBlogsByTeam } from '../../lib/db'
-import { posts, users } from '../../lib/db/schema'
+import { createDb, getTeamBySubdomain, getBlogsByTeam, getDbFromContext, mockTeam } from '@/lib/db'
+import { posts, users } from '@/lib/db/schema'
 import { eq, desc, count } from 'drizzle-orm'
 
-export const Route = createFileRoute('/team/')({
+export const Route = createFileRoute('/$team/')({
   loader: async ({ params, context }) => {
     const { team } = params;
     
@@ -11,8 +11,10 @@ export const Route = createFileRoute('/team/')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
+    const db = getDbFromContext(context);
+    if (!db) {
+      return { team: mockTeam(team), blogs: [] };
+    }
     
     // Get team by subdomain
     const teamData = await getTeamBySubdomain(db, team);
@@ -58,7 +60,7 @@ export const Route = createFileRoute('/team/')({
   },
   component: TeamComponent,
   head: ({ loaderData }) => ({
-    title: `${loaderData.team.name} - Team Dashboard`,
+    title: `${loaderData?.team?.name || 'Team'} - Team Dashboard`,
     meta: [
       {
         name: 'robots',
@@ -68,8 +70,8 @@ export const Route = createFileRoute('/team/')({
   }),
 });
 
-function TeamComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blogs } = loaderData;
+function TeamComponent() {
+  const { team, blogs } = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-gray-50">

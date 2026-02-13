@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain } from '../../../../lib/db'
-import { posts, blogs } from '../../../../lib/db/schema'
+import { getDbFromContext, getTeamBySubdomain, mockTeam, mockBlog } from "@/lib/db"
+import { posts, blogs } from "@/lib/db/schema"
 import { eq, and } from 'drizzle-orm'
 import { useState } from 'react'
 import { 
@@ -14,7 +14,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 
-export const Route = createFileRoute('/team/blog/admin/seo')({
+export const Route = createFileRoute('/$team/$blog/admin/seo')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     
@@ -22,9 +22,12 @@ export const Route = createFileRoute('/team/blog/admin/seo')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      return { team: t, blog: mockBlog(blog, t.id), seoStats: { totalPosts: 0, withMetaTitle: 0, withMetaDescription: 0, withFocusKeyword: 0, withOgImage: 0, avgSeoScore: 0, highScore: 0, mediumScore: 0, lowScore: 0 }, issues: [], posts: [] };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
@@ -93,8 +96,8 @@ export const Route = createFileRoute('/team/blog/admin/seo')({
   }),
 });
 
-function SEOToolsComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blog, seoStats, issues, posts } = loaderData;
+function SEOToolsComponent() {
+  const { team, blog, seoStats, issues, posts } = Route.useLoaderData();
   const [activeTab, setActiveTab] = useState<'overview' | 'issues' | 'keywords'>('overview');
 
   return (

@@ -1,27 +1,27 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
-import { createDb, getTeamBySubdomain } from '../../lib/db'
-import { teams, users } from '../../lib/db/schema'
+import { getDbFromContext, getTeamBySubdomain, mockTeam } from '@/lib/db'
+import { teams, users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { Settings, Users, CreditCard, Trash2, Plus } from 'lucide-react'
 
-export const Route = createFileRoute('/team/settings')({
+export const Route = createFileRoute('/$team/settings')({
   loader: async ({ params, context }) => {
     const { team } = params;
     if (!team) {
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      return { team: mockTeam(team), members: [] };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    // Get team members
     const members = await db
       .select({
         id: users.id,
@@ -33,14 +33,11 @@ export const Route = createFileRoute('/team/settings')({
       .from(users)
       .where(eq(users.teamId, teamData.id));
 
-    return {
-      team: teamData,
-      members,
-    };
+    return { team: teamData, members };
   },
   component: TeamSettingsComponent,
   head: ({ loaderData }) => ({
-    title: `Team Settings - ${loaderData.team.name}`,
+    title: `Team Settings - ${loaderData?.team?.name || 'Team'}`,
     meta: [
       {
         name: 'robots',
@@ -50,8 +47,8 @@ export const Route = createFileRoute('/team/settings')({
   }),
 });
 
-function TeamSettingsComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, members } = loaderData;
+function TeamSettingsComponent() {
+  const { team, members } = Route.useLoaderData();
   const [activeTab, setActiveTab] = useState<'general' | 'members' | 'billing'>('general');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');

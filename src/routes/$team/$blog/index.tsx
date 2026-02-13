@@ -1,9 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb, getTeamBySubdomain, getBlogWithPosts } from '../../../lib/db'
-import { blogs } from '../../../lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { getDbFromContext, getTeamBySubdomain, getBlogWithPosts, mockTeam, mockBlog } from '@/lib/db'
 
-export const Route = createFileRoute('/team/blog/')({
+export const Route = createFileRoute('/$team/$blog/')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     
@@ -11,46 +9,42 @@ export const Route = createFileRoute('/team/blog/')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      return { team: t, blog: mockBlog(blog, t.id), posts: [] };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    // Get blog with posts
     const blogData = await getBlogWithPosts(db, blog, 20, 0);
     if (!blogData.blog) {
       throw new Error('Blog not found');
     }
 
-    // Verify blog belongs to team
     if (blogData.blog.teamId !== teamData.id) {
       throw new Error('Blog not found in this team');
     }
 
-    return {
-      team: teamData,
-      blog: blogData.blog,
-      posts: blogData.posts,
-    };
+    return { team: teamData, blog: blogData.blog, posts: blogData.posts };
   },
   component: BlogComponent,
   head: ({ loaderData }) => ({
-    title: loaderData.blog.title,
+    title: loaderData?.blog?.title || 'Blog',
     meta: [
       {
         name: 'description',
-        content: loaderData.blog.description || `Read the latest posts from ${loaderData.blog.title}`,
+        content: loaderData?.blog?.description || 'Read the latest posts',
       },
     ],
   }),
 });
 
-function BlogComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blog, posts } = loaderData;
+function BlogComponent() {
+  const { team, blog, posts } = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -133,3 +133,41 @@ export async function getAllPostsForBlog(db: Db, blogId: string) {
 
 // Need to import the eq, and, desc functions
 import { eq, and, desc } from "drizzle-orm";
+
+// Helper to safely get DB from route context (returns null if D1 unavailable)
+export function getDbFromContext(context: any): Db | null {
+  const env = context?.env;
+  if (!env?.DB) return null;
+  return createDb(env);
+}
+
+// Mock data factories for local dev without D1
+export function mockTeam(subdomain: string) {
+  return {
+    id: 'local-dev-team',
+    name: subdomain.charAt(0).toUpperCase() + subdomain.slice(1),
+    subdomain,
+    customDomain: null,
+    planType: 'free',
+    aiCreditsMonthly: 100,
+    settings: null,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+export function mockBlog(blogId: string, teamId: string) {
+  return {
+    id: blogId,
+    teamId,
+    title: blogId.charAt(0).toUpperCase() + blogId.slice(1) + ' Blog',
+    description: 'A blog created in local development',
+    defaultLanguage: 'en',
+    languages: JSON.stringify(['en']),
+    defaultOgImage: null,
+    themeSettings: JSON.stringify({ primaryColor: '#3b82f6' }),
+    seoSettings: null,
+    aiSettings: null,
+    customCss: null,
+    createdAt: new Date().toISOString(),
+  };
+}

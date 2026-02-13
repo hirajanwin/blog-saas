@@ -569,7 +569,145 @@ export const apiKeys = sqliteTable('api_keys', {
   createdAt: text('created_at').default(new Date().toISOString()),
 });
 
-// ===== MEDIA LIBRARY =====
+// ===== MEMBERSHIP & GATED CONTENT =====
+
+// Members (subscribers with accounts)
+export const members = sqliteTable('members', {
+  id: text('id').primaryKey(),
+  blogId: text('blog_id').references(() => blogs.id, { onDelete: 'cascade' }).notNull(),
+  email: text('email').notNull(),
+  name: text('name'),
+  avatarUrl: text('avatar_url'),
+  passwordHash: text('password_hash'),
+  membershipTier: text('membership_tier').default('free'), // free, basic, premium
+  membershipStatus: text('membership_status').default('active'), // active, canceled, expired, suspended
+  stripeCustomerId: text('stripe_customer_id'),
+  polarCustomerId: text('polar_customer_id'),
+  subscriptionId: text('subscription_id'),
+  subscriptionEndDate: text('subscription_end_date'),
+  metadata: text('metadata'), // JSON for additional data
+  emailVerified: integer('email_verified', { mode: 'boolean' }).default(false),
+  lastLoginAt: text('last_login_at'),
+  createdAt: text('created_at').default(new Date().toISOString()),
+  updatedAt: text('updated_at').default(new Date().toISOString()),
+});
+
+// Member login tokens
+export const memberAuthTokens = sqliteTable('member_auth_tokens', {
+  id: text('id').primaryKey(),
+  memberId: text('member_id').references(() => members.id, { onDelete: 'cascade' }).notNull(),
+  token: text('token').notNull(),
+  expiresAt: text('expires_at').notNull(),
+  usedAt: text('used_at'),
+  createdAt: text('created_at').default(new Date().toISOString()),
+});
+
+// Gated content access
+export const gatedContent = sqliteTable('gated_content', {
+  id: text('id').primaryKey(),
+  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }).notNull(),
+  accessTier: text('access_tier').notNull(), // free, basic, premium
+  teaserContent: text('teaser_content'), // Preview content shown to non-members
+  lockContent: integer('lock_content', { mode: 'boolean' }).default(true),
+  createdAt: text('created_at').default(new Date().toISOString()),
+});
+
+// Member content access log
+export const memberContentAccess = sqliteTable('member_content_access', {
+  id: text('id').primaryKey(),
+  memberId: text('member_id').references(() => members.id, { onDelete: 'cascade' }).notNull(),
+  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }).notNull(),
+  accessedAt: text('accessed_at').default(new Date().toISOString()),
+});
+
+// ===== AI CONTENT TOOLS =====
+
+// AI Content Briefs
+export const aiBriefs = sqliteTable('ai_briefs', {
+  id: text('id').primaryKey(),
+  teamId: text('team_id').references(() => teams.id, { onDelete: 'cascade' }).notNull(),
+  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
+  keyword: text('keyword').notNull(),
+  targetWordCount: integer('target_word_count').default(1500),
+  tone: text('tone'), // professional, casual, authoritative
+  structure: text('structure'), // JSON: introduction, main points, conclusion sections
+  keyPoints: text('key_points'), // JSON array of must-include points
+  sources: text('sources'), // JSON array of suggested sources
+  competitorUrls: text('competitor_urls'), // JSON array
+  briefContent: text('brief_content').notNull(), // Generated brief
+  status: text('status').default('pending'), // pending, approved, used
+  createdAt: text('created_at').default(new Date().toISOString()),
+  updatedAt: text('updated_at').default(new Date().toISOString()),
+});
+
+// AI Title Tests (A/B testing)
+export const titleTests = sqliteTable('title_tests', {
+  id: text('id').primaryKey(),
+  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }).notNull(),
+  title: text('title').notNull(),
+  variant: text('variant'), // A, B, C, D
+  impressions: integer('impressions').default(0),
+  clicks: integer('clicks').default(0),
+  ctr: real('ctr').default(0), // click-through rate
+  winner: integer('winner', { mode: 'boolean' }).default(false),
+  status: text('status').default('running'), // running, completed, paused
+  startedAt: text('started_at').default(new Date().toISOString()),
+  endedAt: text('ended_at'),
+  createdAt: text('created_at').default(new Date().toISOString()),
+});
+
+// AI Generated Images
+export const aiImages = sqliteTable('ai_images', {
+  id: text('id').primaryKey(),
+  teamId: text('team_id').references(() => teams.id, { onDelete: 'cascade' }).notNull(),
+  postId: text('post_id').references(() => posts.id, { onDelete: 'cascade' }),
+  prompt: text('prompt').notNull(),
+  negativePrompt: text('negative_prompt'),
+  model: text('model'), // dall-e-3, stable-diffusion, etc.
+  imageUrl: text('image_url').notNull(),
+  thumbnailUrl: text('thumbnail_url'),
+  width: integer('width'),
+  height: integer('height'),
+  style: text('style'), // photorealistic, illustration, abstract
+  status: text('status').default('completed'), // processing, completed, failed
+  creditsUsed: integer('credits_used').default(1),
+  createdAt: text('created_at').default(new Date().toISOString()),
+});
+
+// ===== CONTENT REPURPOSING =====
+
+// Repurposed content variants
+export const repurposedContent = sqliteTable('repurposed_content', {
+  id: text('id').primaryKey(),
+  teamId: text('team_id').references(() => teams.id, { onDelete: 'cascade' }).notNull(),
+  originalPostId: text('original_post_id').references(() => posts.id, { onDelete: 'cascade' }).notNull(),
+  platform: text('platform').notNull(), // twitter, linkedin, facebook, newsletter, medium
+  content: text('content').notNull(),
+  mediaUrls: text('media_urls'), // JSON array
+  status: text('status').default('draft'), // draft, scheduled, published
+  scheduledAt: text('scheduled_at'),
+  publishedAt: text('published_at'),
+  platformPostUrl: text('platform_post_url'),
+  engagement: text('engagement'), // JSON: likes, comments, shares
+  createdAt: text('created_at').default(new Date().toISOString()),
+});
+
+// ===== EMBEDDABLE WIDGETS =====
+
+// Widget configurations
+export const widgets = sqliteTable('widgets', {
+  id: text('id').primaryKey(),
+  teamId: text('team_id').references(() => teams.id, { onDelete: 'cascade' }).notNull(),
+  blogId: text('blog_id').references(() => blogs.id, { onDelete: 'cascade' }),
+  type: text('type').notNull(), // signup_form, content_card, newsletter_embed, paywall
+  name: text('name').notNull(),
+  config: text('config').notNull(), // JSON: styling, behavior, content
+  embedCode: text('embed_code'),
+  active: integer('active', { mode: 'boolean' }).default(true),
+  usageCount: integer('usage_count').default(0),
+  createdAt: text('created_at').default(new Date().toISOString()),
+  updatedAt: text('updated_at').default(new Date().toISOString()),
+});
 
 // Media files with optimization
 export const mediaFiles = sqliteTable('media_files', {

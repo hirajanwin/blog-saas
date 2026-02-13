@@ -1,53 +1,47 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createDb } from '../../../../lib/db'
-import { getTeamBySubdomain } from '../../../../lib/db'
+import { getDbFromContext, getTeamBySubdomain, mockTeam } from "@/lib/db"
 import { eq, desc } from 'drizzle-orm'
 import { useState } from 'react'
-import AnalyticsDashboard from '../../../../components/AnalyticsDashboard'
+import AnalyticsDashboard from "@/components/AnalyticsDashboard"
 
-export const Route = createFileRoute('/team/blog/admin/')({
+export const Route = createFileRoute('/$team/$blog/admin/')({
   loader: async ({ params, context }) => {
     const { team, blog } = params;
     if (!team || !blog) {
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      return { team: mockTeam(team), blogId: blog, posts: [], analytics: { totalViews: 0, totalUniqueViews: 0, avgTimeOnPage: 0 } };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    // Get all posts for this blog (including drafts)
-    const posts = await db.select()
+    const allPosts = await db.select()
       .from(db.schema.posts)
       .where(eq(db.schema.posts.blogId, blog))
       .orderBy(desc(db.schema.posts.createdAt));
 
-    // Get analytics data for the dashboard
-    const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0)
-    const totalUniqueViews = posts.reduce((sum, post) => sum + (post.uniqueViews || 0), 0)
-    const avgTimeOnPage = posts.length > 0 
-      ? posts.reduce((sum, post) => sum + (post.avgTimeOnPage || 0), 0) / posts.length 
+    const totalViews = allPosts.reduce((sum: number, post: any) => sum + (post.views || 0), 0)
+    const totalUniqueViews = allPosts.reduce((sum: number, post: any) => sum + (post.uniqueViews || 0), 0)
+    const avgTimeOnPage = allPosts.length > 0 
+      ? allPosts.reduce((sum: number, post: any) => sum + (post.avgTimeOnPage || 0), 0) / allPosts.length 
       : 0
 
     return {
       team: teamData,
       blogId: blog,
-      posts,
-      analytics: {
-        totalViews,
-        totalUniqueViews,
-        avgTimeOnPage,
-      }
+      posts: allPosts,
+      analytics: { totalViews, totalUniqueViews, avgTimeOnPage }
     };
   },
   component: AdminComponent,
   head: ({ loaderData }) => ({
-    title: `Admin - ${loaderData.blogId}`,
+    title: `Admin - ${loaderData?.blogId || 'Blog'}`,
     meta: [
       {
         name: 'robots',
@@ -57,8 +51,8 @@ export const Route = createFileRoute('/team/blog/admin/')({
   }),
 });
 
-function AdminComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team, blogId, posts, analytics } = loaderData;
+function AdminComponent() {
+  const { team, blogId, posts, analytics } = Route.useLoaderData();
   const [activeTab, setActiveTab] = useState<'posts' | 'analytics'>('posts');
 
   return (

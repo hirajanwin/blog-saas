@@ -1,11 +1,9 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
-import { createDb, getTeamBySubdomain } from '../../lib/db'
-import { blogs } from '../../lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { getDbFromContext, getTeamBySubdomain, mockTeam } from '@/lib/db'
 
-export const Route = createFileRoute('/team/create-blog')({
+export const Route = createFileRoute('/$team/create-blog')({
   loader: async ({ params, context }) => {
     const { team } = params;
     
@@ -13,22 +11,21 @@ export const Route = createFileRoute('/team/create-blog')({
       throw redirect({ to: '/' });
     }
 
-    const env = context.env as any;
-    const db = createDb(env);
-    
-    // Get team by subdomain
+    const db = getDbFromContext(context);
+    if (!db) {
+      return { team: mockTeam(team) };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error('Team not found');
     }
 
-    return {
-      team: teamData,
-    };
+    return { team: teamData };
   },
   component: CreateBlogComponent,
   head: ({ loaderData }) => ({
-    title: `Create Blog - ${loaderData.team.name}`,
+    title: `Create Blog - ${loaderData?.team?.name || 'Team'}`,
     meta: [
       {
         name: 'robots',
@@ -38,8 +35,8 @@ export const Route = createFileRoute('/team/create-blog')({
   }),
 });
 
-function CreateBlogComponent({ loaderData }: { loaderData: Awaited<ReturnType<typeof Route.loader>> }) {
-  const { team } = loaderData;
+function CreateBlogComponent() {
+  const { team } = Route.useLoaderData();
   
   const [formData, setFormData] = useState({
     title: '',

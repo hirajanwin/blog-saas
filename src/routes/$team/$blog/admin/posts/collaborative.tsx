@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 
-export const Route = createFileRoute('/team/blog/admin/posts/collaborative')({
+export const Route = createFileRoute('/$team/$blog/admin/posts/collaborative')({
   component: CollaborativeEditor,
   head: () => ({
     title: 'Collaborative Editor',

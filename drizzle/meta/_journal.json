@@ -15,6 +15,13 @@
       "when": 1770923540361,
       "tag": "0001_large_starhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1770926586037,
+      "tag": "0002_light_outlaw_kid",
+      "breakpoints": true
     }
   ]
 }

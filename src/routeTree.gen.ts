@@ -9,54 +9,89 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as CreateTeamRouteImport } from './routes/create-team'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TeamIndexRouteImport } from './routes/[team]/index'
-import { Route as SitemapXmlRouteImport } from './routes/sitemap.xml'
-import { Route as RobotsTxtRouteImport } from './routes/robots.txt'
-import { Route as KeyTxtRouteImport } from './routes/[key].txt'
-import { Route as TeamBlogIndexRouteImport } from './routes/[team]/[blog]/index'
+import { Route as TeamIndexRouteImport } from './routes/$team/index'
+import { Route as TeamSettingsRouteImport } from './routes/$team/settings'
+import { Route as TeamCreateBlogRouteImport } from './routes/$team/create-blog'
+import { Route as KeyTxtRouteImport } from './routes/$key.txt'
+import { Route as TeamBlogIndexRouteImport } from './routes/$team/$blog/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
 import { Route as ApiIndexnowSubmitRouteImport } from './routes/api/indexnow.submit'
-import { Route as TeamBlogSlugIndexRouteImport } from './routes/[team]/[blog]/[slug]/index'
-import { Route as TeamBlogAdminIndexRouteImport } from './routes/[team]/[blog]/admin/index'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
+import { Route as TeamBlogAdminIndexRouteImport } from './routes/$team/$blog/admin/index'
+import { Route as TeamBlogSlugIndexRouteImport } from './routes/$team/$blog/$slug/index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
-import { Route as TeamBlogAdminPostsNewRouteImport } from './routes/[team]/[blog]/admin/posts/new'
-import { Route as TeamBlogAdminPostsEnhancedNewRouteImport } from './routes/[team]/[blog]/admin/posts/enhanced-new'
-import { Route as TeamBlogAdminPostsCollaborativeRouteImport } from './routes/[team]/[blog]/admin/posts/collaborative'
+import { Route as TeamBlogAdminTemplatesRouteImport } from './routes/$team/$blog/admin/templates'
+import { Route as TeamBlogAdminSeoRouteImport } from './routes/$team/$blog/admin/seo'
+import { Route as TeamBlogAdminImportRouteImport } from './routes/$team/$blog/admin/import'
+import { Route as TeamBlogAdminCalendarRouteImport } from './routes/$team/$blog/admin/calendar'
+import { Route as TeamBlogAdminPostsNewRouteImport } from './routes/$team/$blog/admin/posts/new'
+import { Route as TeamBlogAdminPostsEnhancedNewRouteImport } from './routes/$team/$blog/admin/posts/enhanced-new'
+import { Route as TeamBlogAdminPostsCollaborativeRouteImport } from './routes/$team/$blog/admin/posts/collaborative'
+import { Route as TeamBlogAdminPostsPostIdIndexRouteImport } from './routes/$team/$blog/admin/posts/$postId/index'
 
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateTeamRoute = CreateTeamRouteImport.update({
+  id: '/create-team',
+  path: '/create-team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamIndexRoute = TeamIndexRouteImport.update({
-  id: '/team/',
-  path: '/team/',
+  id: '/$team/',
+  path: '/$team/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapXmlRoute = SitemapXmlRouteImport.update({
-  id: '/sitemap/xml',
-  path: '/sitemap/xml',
+const TeamSettingsRoute = TeamSettingsRouteImport.update({
+  id: '/$team/settings',
+  path: '/$team/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RobotsTxtRoute = RobotsTxtRouteImport.update({
-  id: '/robots/txt',
-  path: '/robots/txt',
+const TeamCreateBlogRoute = TeamCreateBlogRouteImport.update({
+  id: '/$team/create-blog',
+  path: '/$team/create-blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KeyTxtRoute = KeyTxtRouteImport.update({
-  id: '/key/txt',
-  path: '/key/txt',
+  id: '/$key/txt',
+  path: '/$key/txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamBlogIndexRoute = TeamBlogIndexRouteImport.update({
-  id: '/team/blog/',
-  path: '/team/blog/',
+  id: '/$team/$blog/',
+  path: '/$team/$blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
@@ -79,19 +114,19 @@ const ApiIndexnowSubmitRoute = ApiIndexnowSubmitRouteImport.update({
   path: '/api/indexnow/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TeamBlogSlugIndexRoute = TeamBlogSlugIndexRouteImport.update({
-  id: '/team/blog/slug/',
-  path: '/team/blog/slug/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TeamBlogAdminIndexRoute = TeamBlogAdminIndexRouteImport.update({
-  id: '/team/blog/admin/',
-  path: '/team/blog/admin/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
   id: '/demo/start/ssr/',
   path: '/demo/start/ssr/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamBlogAdminIndexRoute = TeamBlogAdminIndexRouteImport.update({
+  id: '/$team/$blog/admin/',
+  path: '/$team/$blog/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamBlogSlugIndexRoute = TeamBlogSlugIndexRouteImport.update({
+  id: '/$team/$blog/$slug/',
+  path: '/$team/$blog/$slug/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
@@ -109,178 +144,309 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
   path: '/demo/start/ssr/data-only',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TeamBlogAdminTemplatesRoute = TeamBlogAdminTemplatesRouteImport.update({
+  id: '/$team/$blog/admin/templates',
+  path: '/$team/$blog/admin/templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamBlogAdminSeoRoute = TeamBlogAdminSeoRouteImport.update({
+  id: '/$team/$blog/admin/seo',
+  path: '/$team/$blog/admin/seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamBlogAdminImportRoute = TeamBlogAdminImportRouteImport.update({
+  id: '/$team/$blog/admin/import',
+  path: '/$team/$blog/admin/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamBlogAdminCalendarRoute = TeamBlogAdminCalendarRouteImport.update({
+  id: '/$team/$blog/admin/calendar',
+  path: '/$team/$blog/admin/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeamBlogAdminPostsNewRoute = TeamBlogAdminPostsNewRouteImport.update({
-  id: '/team/blog/admin/posts/new',
-  path: '/team/blog/admin/posts/new',
+  id: '/$team/$blog/admin/posts/new',
+  path: '/$team/$blog/admin/posts/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamBlogAdminPostsEnhancedNewRoute =
   TeamBlogAdminPostsEnhancedNewRouteImport.update({
-    id: '/team/blog/admin/posts/enhanced-new',
-    path: '/team/blog/admin/posts/enhanced-new',
+    id: '/$team/$blog/admin/posts/enhanced-new',
+    path: '/$team/$blog/admin/posts/enhanced-new',
     getParentRoute: () => rootRouteImport,
   } as any)
 const TeamBlogAdminPostsCollaborativeRoute =
   TeamBlogAdminPostsCollaborativeRouteImport.update({
-    id: '/team/blog/admin/posts/collaborative',
-    path: '/team/blog/admin/posts/collaborative',
+    id: '/$team/$blog/admin/posts/collaborative',
+    path: '/$team/$blog/admin/posts/collaborative',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TeamBlogAdminPostsPostIdIndexRoute =
+  TeamBlogAdminPostsPostIdIndexRouteImport.update({
+    id: '/$team/$blog/admin/posts/$postId/',
+    path: '/$team/$blog/admin/posts/$postId/',
     getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/key/txt': typeof KeyTxtRoute
-  '/robots/txt': typeof RobotsTxtRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
-  '/team/': typeof TeamIndexRoute
+  '/create-team': typeof CreateTeamRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/$key/txt': typeof KeyTxtRoute
+  '/$team/create-blog': typeof TeamCreateBlogRoute
+  '/$team/settings': typeof TeamSettingsRoute
+  '/$team/': typeof TeamIndexRoute
   '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/team/blog/': typeof TeamBlogIndexRoute
+  '/$team/$blog/': typeof TeamBlogIndexRoute
+  '/$team/$blog/admin/calendar': typeof TeamBlogAdminCalendarRoute
+  '/$team/$blog/admin/import': typeof TeamBlogAdminImportRoute
+  '/$team/$blog/admin/seo': typeof TeamBlogAdminSeoRoute
+  '/$team/$blog/admin/templates': typeof TeamBlogAdminTemplatesRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/$team/$blog/$slug/': typeof TeamBlogSlugIndexRoute
+  '/$team/$blog/admin/': typeof TeamBlogAdminIndexRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-  '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
-  '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
-  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
-  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
-  '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
+  '/$team/$blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
+  '/$team/$blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/$postId/': typeof TeamBlogAdminPostsPostIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/key/txt': typeof KeyTxtRoute
-  '/robots/txt': typeof RobotsTxtRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
-  '/team': typeof TeamIndexRoute
+  '/create-team': typeof CreateTeamRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/$key/txt': typeof KeyTxtRoute
+  '/$team/create-blog': typeof TeamCreateBlogRoute
+  '/$team/settings': typeof TeamSettingsRoute
+  '/$team': typeof TeamIndexRoute
   '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/team/blog': typeof TeamBlogIndexRoute
+  '/$team/$blog': typeof TeamBlogIndexRoute
+  '/$team/$blog/admin/calendar': typeof TeamBlogAdminCalendarRoute
+  '/$team/$blog/admin/import': typeof TeamBlogAdminImportRoute
+  '/$team/$blog/admin/seo': typeof TeamBlogAdminSeoRoute
+  '/$team/$blog/admin/templates': typeof TeamBlogAdminTemplatesRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/$team/$blog/$slug': typeof TeamBlogSlugIndexRoute
+  '/$team/$blog/admin': typeof TeamBlogAdminIndexRoute
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
-  '/team/blog/admin': typeof TeamBlogAdminIndexRoute
-  '/team/blog/slug': typeof TeamBlogSlugIndexRoute
-  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
-  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
-  '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
+  '/$team/$blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
+  '/$team/$blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/$postId': typeof TeamBlogAdminPostsPostIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/key/txt': typeof KeyTxtRoute
-  '/robots/txt': typeof RobotsTxtRoute
-  '/sitemap/xml': typeof SitemapXmlRoute
-  '/team/': typeof TeamIndexRoute
+  '/create-team': typeof CreateTeamRoute
+  '/login': typeof LoginRoute
+  '/profile': typeof ProfileRoute
+  '/register': typeof RegisterRoute
+  '/search': typeof SearchRoute
+  '/$key/txt': typeof KeyTxtRoute
+  '/$team/create-blog': typeof TeamCreateBlogRoute
+  '/$team/settings': typeof TeamSettingsRoute
+  '/$team/': typeof TeamIndexRoute
   '/api/indexnow/submit': typeof ApiIndexnowSubmitRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/team/blog/': typeof TeamBlogIndexRoute
+  '/$team/$blog/': typeof TeamBlogIndexRoute
+  '/$team/$blog/admin/calendar': typeof TeamBlogAdminCalendarRoute
+  '/$team/$blog/admin/import': typeof TeamBlogAdminImportRoute
+  '/$team/$blog/admin/seo': typeof TeamBlogAdminSeoRoute
+  '/$team/$blog/admin/templates': typeof TeamBlogAdminTemplatesRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
+  '/$team/$blog/$slug/': typeof TeamBlogSlugIndexRoute
+  '/$team/$blog/admin/': typeof TeamBlogAdminIndexRoute
   '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
-  '/team/blog/admin/': typeof TeamBlogAdminIndexRoute
-  '/team/blog/slug/': typeof TeamBlogSlugIndexRoute
-  '/team/blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
-  '/team/blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
-  '/team/blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/collaborative': typeof TeamBlogAdminPostsCollaborativeRoute
+  '/$team/$blog/admin/posts/enhanced-new': typeof TeamBlogAdminPostsEnhancedNewRoute
+  '/$team/$blog/admin/posts/new': typeof TeamBlogAdminPostsNewRoute
+  '/$team/$blog/admin/posts/$postId/': typeof TeamBlogAdminPostsPostIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/key/txt'
-    | '/robots/txt'
-    | '/sitemap/xml'
-    | '/team/'
+    | '/create-team'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/search'
+    | '/$key/txt'
+    | '/$team/create-blog'
+    | '/$team/settings'
+    | '/$team/'
     | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
-    | '/team/blog/'
+    | '/$team/$blog/'
+    | '/$team/$blog/admin/calendar'
+    | '/$team/$blog/admin/import'
+    | '/$team/$blog/admin/seo'
+    | '/$team/$blog/admin/templates'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
+    | '/$team/$blog/$slug/'
+    | '/$team/$blog/admin/'
     | '/demo/start/ssr/'
-    | '/team/blog/admin/'
-    | '/team/blog/slug/'
-    | '/team/blog/admin/posts/collaborative'
-    | '/team/blog/admin/posts/enhanced-new'
-    | '/team/blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/collaborative'
+    | '/$team/$blog/admin/posts/enhanced-new'
+    | '/$team/$blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/$postId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/key/txt'
-    | '/robots/txt'
-    | '/sitemap/xml'
-    | '/team'
+    | '/create-team'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/search'
+    | '/$key/txt'
+    | '/$team/create-blog'
+    | '/$team/settings'
+    | '/$team'
     | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
-    | '/team/blog'
+    | '/$team/$blog'
+    | '/$team/$blog/admin/calendar'
+    | '/$team/$blog/admin/import'
+    | '/$team/$blog/admin/seo'
+    | '/$team/$blog/admin/templates'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
+    | '/$team/$blog/$slug'
+    | '/$team/$blog/admin'
     | '/demo/start/ssr'
-    | '/team/blog/admin'
-    | '/team/blog/slug'
-    | '/team/blog/admin/posts/collaborative'
-    | '/team/blog/admin/posts/enhanced-new'
-    | '/team/blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/collaborative'
+    | '/$team/$blog/admin/posts/enhanced-new'
+    | '/$team/$blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/$postId'
   id:
     | '__root__'
     | '/'
-    | '/key/txt'
-    | '/robots/txt'
-    | '/sitemap/xml'
-    | '/team/'
+    | '/create-team'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/search'
+    | '/$key/txt'
+    | '/$team/create-blog'
+    | '/$team/settings'
+    | '/$team/'
     | '/api/indexnow/submit'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
-    | '/team/blog/'
+    | '/$team/$blog/'
+    | '/$team/$blog/admin/calendar'
+    | '/$team/$blog/admin/import'
+    | '/$team/$blog/admin/seo'
+    | '/$team/$blog/admin/templates'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
+    | '/$team/$blog/$slug/'
+    | '/$team/$blog/admin/'
     | '/demo/start/ssr/'
-    | '/team/blog/admin/'
-    | '/team/blog/slug/'
-    | '/team/blog/admin/posts/collaborative'
-    | '/team/blog/admin/posts/enhanced-new'
-    | '/team/blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/collaborative'
+    | '/$team/$blog/admin/posts/enhanced-new'
+    | '/$team/$blog/admin/posts/new'
+    | '/$team/$blog/admin/posts/$postId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CreateTeamRoute: typeof CreateTeamRoute
+  LoginRoute: typeof LoginRoute
+  ProfileRoute: typeof ProfileRoute
+  RegisterRoute: typeof RegisterRoute
+  SearchRoute: typeof SearchRoute
   KeyTxtRoute: typeof KeyTxtRoute
-  RobotsTxtRoute: typeof RobotsTxtRoute
-  SitemapXmlRoute: typeof SitemapXmlRoute
+  TeamCreateBlogRoute: typeof TeamCreateBlogRoute
+  TeamSettingsRoute: typeof TeamSettingsRoute
   TeamIndexRoute: typeof TeamIndexRoute
   ApiIndexnowSubmitRoute: typeof ApiIndexnowSubmitRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
   TeamBlogIndexRoute: typeof TeamBlogIndexRoute
+  TeamBlogAdminCalendarRoute: typeof TeamBlogAdminCalendarRoute
+  TeamBlogAdminImportRoute: typeof TeamBlogAdminImportRoute
+  TeamBlogAdminSeoRoute: typeof TeamBlogAdminSeoRoute
+  TeamBlogAdminTemplatesRoute: typeof TeamBlogAdminTemplatesRoute
   DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
   DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
   DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
-  TeamBlogAdminIndexRoute: typeof TeamBlogAdminIndexRoute
   TeamBlogSlugIndexRoute: typeof TeamBlogSlugIndexRoute
+  TeamBlogAdminIndexRoute: typeof TeamBlogAdminIndexRoute
+  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
   TeamBlogAdminPostsCollaborativeRoute: typeof TeamBlogAdminPostsCollaborativeRoute
   TeamBlogAdminPostsEnhancedNewRoute: typeof TeamBlogAdminPostsEnhancedNewRoute
   TeamBlogAdminPostsNewRoute: typeof TeamBlogAdminPostsNewRoute
+  TeamBlogAdminPostsPostIdIndexRoute: typeof TeamBlogAdminPostsPostIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-team': {
+      id: '/create-team'
+      path: '/create-team'
+      fullPath: '/create-team'
+      preLoaderRoute: typeof CreateTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -288,38 +454,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/': {
-      id: '/team/'
-      path: '/team'
-      fullPath: '/team/'
+    '/$team/': {
+      id: '/$team/'
+      path: '/$team'
+      fullPath: '/$team/'
       preLoaderRoute: typeof TeamIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap/xml': {
-      id: '/sitemap/xml'
-      path: '/sitemap/xml'
-      fullPath: '/sitemap/xml'
-      preLoaderRoute: typeof SitemapXmlRouteImport
+    '/$team/settings': {
+      id: '/$team/settings'
+      path: '/$team/settings'
+      fullPath: '/$team/settings'
+      preLoaderRoute: typeof TeamSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/robots/txt': {
-      id: '/robots/txt'
-      path: '/robots/txt'
-      fullPath: '/robots/txt'
-      preLoaderRoute: typeof RobotsTxtRouteImport
+    '/$team/create-blog': {
+      id: '/$team/create-blog'
+      path: '/$team/create-blog'
+      fullPath: '/$team/create-blog'
+      preLoaderRoute: typeof TeamCreateBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/key/txt': {
-      id: '/key/txt'
-      path: '/key/txt'
-      fullPath: '/key/txt'
+    '/$key/txt': {
+      id: '/$key/txt'
+      path: '/$key/txt'
+      fullPath: '/$key/txt'
       preLoaderRoute: typeof KeyTxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/blog/': {
-      id: '/team/blog/'
-      path: '/team/blog'
-      fullPath: '/team/blog/'
+    '/$team/$blog/': {
+      id: '/$team/$blog/'
+      path: '/$team/$blog'
+      fullPath: '/$team/$blog/'
       preLoaderRoute: typeof TeamBlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -351,25 +517,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiIndexnowSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/blog/slug/': {
-      id: '/team/blog/slug/'
-      path: '/team/blog/slug'
-      fullPath: '/team/blog/slug/'
-      preLoaderRoute: typeof TeamBlogSlugIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/team/blog/admin/': {
-      id: '/team/blog/admin/'
-      path: '/team/blog/admin'
-      fullPath: '/team/blog/admin/'
-      preLoaderRoute: typeof TeamBlogAdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/demo/start/ssr/': {
       id: '/demo/start/ssr/'
       path: '/demo/start/ssr'
       fullPath: '/demo/start/ssr/'
       preLoaderRoute: typeof DemoStartSsrIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/': {
+      id: '/$team/$blog/admin/'
+      path: '/$team/$blog/admin'
+      fullPath: '/$team/$blog/admin/'
+      preLoaderRoute: typeof TeamBlogAdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/$slug/': {
+      id: '/$team/$blog/$slug/'
+      path: '/$team/$blog/$slug'
+      fullPath: '/$team/$blog/$slug/'
+      preLoaderRoute: typeof TeamBlogSlugIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/start/ssr/spa-mode': {
@@ -393,25 +559,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/blog/admin/posts/new': {
-      id: '/team/blog/admin/posts/new'
-      path: '/team/blog/admin/posts/new'
-      fullPath: '/team/blog/admin/posts/new'
+    '/$team/$blog/admin/templates': {
+      id: '/$team/$blog/admin/templates'
+      path: '/$team/$blog/admin/templates'
+      fullPath: '/$team/$blog/admin/templates'
+      preLoaderRoute: typeof TeamBlogAdminTemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/seo': {
+      id: '/$team/$blog/admin/seo'
+      path: '/$team/$blog/admin/seo'
+      fullPath: '/$team/$blog/admin/seo'
+      preLoaderRoute: typeof TeamBlogAdminSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/import': {
+      id: '/$team/$blog/admin/import'
+      path: '/$team/$blog/admin/import'
+      fullPath: '/$team/$blog/admin/import'
+      preLoaderRoute: typeof TeamBlogAdminImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/calendar': {
+      id: '/$team/$blog/admin/calendar'
+      path: '/$team/$blog/admin/calendar'
+      fullPath: '/$team/$blog/admin/calendar'
+      preLoaderRoute: typeof TeamBlogAdminCalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/posts/new': {
+      id: '/$team/$blog/admin/posts/new'
+      path: '/$team/$blog/admin/posts/new'
+      fullPath: '/$team/$blog/admin/posts/new'
       preLoaderRoute: typeof TeamBlogAdminPostsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/blog/admin/posts/enhanced-new': {
-      id: '/team/blog/admin/posts/enhanced-new'
-      path: '/team/blog/admin/posts/enhanced-new'
-      fullPath: '/team/blog/admin/posts/enhanced-new'
+    '/$team/$blog/admin/posts/enhanced-new': {
+      id: '/$team/$blog/admin/posts/enhanced-new'
+      path: '/$team/$blog/admin/posts/enhanced-new'
+      fullPath: '/$team/$blog/admin/posts/enhanced-new'
       preLoaderRoute: typeof TeamBlogAdminPostsEnhancedNewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/team/blog/admin/posts/collaborative': {
-      id: '/team/blog/admin/posts/collaborative'
-      path: '/team/blog/admin/posts/collaborative'
-      fullPath: '/team/blog/admin/posts/collaborative'
+    '/$team/$blog/admin/posts/collaborative': {
+      id: '/$team/$blog/admin/posts/collaborative'
+      path: '/$team/$blog/admin/posts/collaborative'
+      fullPath: '/$team/$blog/admin/posts/collaborative'
       preLoaderRoute: typeof TeamBlogAdminPostsCollaborativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$team/$blog/admin/posts/$postId/': {
+      id: '/$team/$blog/admin/posts/$postId/'
+      path: '/$team/$blog/admin/posts/$postId'
+      fullPath: '/$team/$blog/admin/posts/$postId/'
+      preLoaderRoute: typeof TeamBlogAdminPostsPostIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -419,24 +620,34 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CreateTeamRoute: CreateTeamRoute,
+  LoginRoute: LoginRoute,
+  ProfileRoute: ProfileRoute,
+  RegisterRoute: RegisterRoute,
+  SearchRoute: SearchRoute,
   KeyTxtRoute: KeyTxtRoute,
-  RobotsTxtRoute: RobotsTxtRoute,
-  SitemapXmlRoute: SitemapXmlRoute,
+  TeamCreateBlogRoute: TeamCreateBlogRoute,
+  TeamSettingsRoute: TeamSettingsRoute,
   TeamIndexRoute: TeamIndexRoute,
   ApiIndexnowSubmitRoute: ApiIndexnowSubmitRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
   TeamBlogIndexRoute: TeamBlogIndexRoute,
+  TeamBlogAdminCalendarRoute: TeamBlogAdminCalendarRoute,
+  TeamBlogAdminImportRoute: TeamBlogAdminImportRoute,
+  TeamBlogAdminSeoRoute: TeamBlogAdminSeoRoute,
+  TeamBlogAdminTemplatesRoute: TeamBlogAdminTemplatesRoute,
   DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
   DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
   DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
-  TeamBlogAdminIndexRoute: TeamBlogAdminIndexRoute,
   TeamBlogSlugIndexRoute: TeamBlogSlugIndexRoute,
+  TeamBlogAdminIndexRoute: TeamBlogAdminIndexRoute,
+  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
   TeamBlogAdminPostsCollaborativeRoute: TeamBlogAdminPostsCollaborativeRoute,
   TeamBlogAdminPostsEnhancedNewRoute: TeamBlogAdminPostsEnhancedNewRoute,
   TeamBlogAdminPostsNewRoute: TeamBlogAdminPostsNewRoute,
+  TeamBlogAdminPostsPostIdIndexRoute: TeamBlogAdminPostsPostIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

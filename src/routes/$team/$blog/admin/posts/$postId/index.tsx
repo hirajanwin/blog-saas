@@ -1,21 +1,26 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { createDb, getTeamBySubdomain } from "../../../../lib/db";
-import { posts, blogs } from "../../../../lib/db/schema";
+import { getDbFromContext, getTeamBySubdomain, mockTeam, mockBlog } from "@/lib/db";
+import { posts, blogs } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-import EnhancedTiptapEditor from "../../../../components/editor/EnhancedTiptapEditor";
-import SEOStatusBar from "../../../../components/SEOStatusBar";
-import { InternalLinkingSuggestions } from "../../../../components/InternalLinkingSuggestions";
+import EnhancedTiptapEditor from "@/components/editor/EnhancedTiptapEditor";
+import SEOStatusBar from "@/components/SEOStatusBar";
+import { InternalLinkingSuggestions } from "@/components/InternalLinkingSuggestions";
 import { Editor } from "@tiptap/react";
 
-export const Route = createFileRoute("/team/blog/admin/posts/[postId]/")({
+export const Route = createFileRoute("/$team/$blog/admin/posts/$postId/")({
   loader: async ({ params, context }) => {
     const { team, blog, postId } = params;
     if (!team || !blog || !postId) {
       throw redirect({ to: "/" });
     }
-    const env = context.env as any;
-    const db = createDb(env);
+    const db = getDbFromContext(context);
+    if (!db) {
+      const t = mockTeam(team);
+      const b = mockBlog(blog, t.id);
+      return { team: t, blog: b, post: { id: postId, blogId: blog, title: 'Sample Post', slug: 'sample-post', content: '<p>Sample content</p>', excerpt: '', metaTitle: '', metaDescription: '', focusKeyword: '', ogImage: null, seoScore: 0, status: 'draft', views: 0, readingTime: 1, publishedAt: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } };
+    }
+
     const teamData = await getTeamBySubdomain(db, team);
     if (!teamData) {
       throw new Error("Team not found");
@@ -42,15 +47,11 @@ export const Route = createFileRoute("/team/blog/admin/posts/[postId]/")({
     if (postData[0].blogId !== blog) {
       throw new Error("Post not found in this blog");
     }
-    return {
-      team: teamData,
-      blog: blogData[0],
-      post: postData[0],
-    };
+    return { team: teamData, blog: blogData[0], post: postData[0] };
   },
   component: EditPostComponent,
   head: ({ loaderData }) => ({
-    title: `Edit: ${loaderData.post.title}`,
+    title: `Edit: ${loaderData?.post?.title || 'Post'}`,
     meta: [
       {
         name: "robots",
@@ -60,12 +61,8 @@ export const Route = createFileRoute("/team/blog/admin/posts/[postId]/")({
   }),
 });
 
-function EditPostComponent({
-  loaderData,
-}: {
-  loaderData: Awaited<ReturnType<typeof Route.loader>>;
-}) {
-  const { team, blog, post } = loaderData;
+function EditPostComponent() {
+  const { team, blog, post } = Route.useLoaderData();
   const [formData, setFormData] = useState({
     title: post.title,
     slug: post.slug,
